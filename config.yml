@@ -1,0 +1,5 @@
+port : 3000
+
+database :
+  mysql :
+    connection-string : root:my-secret-pw@tcp(127.0.0.1:3307)/test_databse?charset=utf8mb4&parseTime=True&loc=Local
