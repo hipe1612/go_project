@@ -30,6 +30,11 @@ func (c PersonService) CreatePerson(g *gin.Context) *common.Error {
 		return &common.Error{Code: "400", Message: "Invalid request body"}
 	}
 
+	// Perform age validation
+	if data.Age < 0 || data.Age > 120 {
+		return &common.Error{Code: "400", Message: "Invalid age"}
+	}
+
 	if err := c.repository.CreatePerson(&data); err != nil {
 		return nil
 	}
@@ -63,6 +68,12 @@ func (c PersonService) UpdatePerson(g *gin.Context) (*model.NamesUpdate, *common
 	if err := g.ShouldBindJSON(&data); err != nil {
 		return nil, &common.Error{Code: "400", Message: err.Error()}
 	}
+
+	// Perform age validation
+	if data.Age != nil && (*data.Age < 0 || *data.Age > 120) {
+		return nil, &common.Error{Code: "400", Message: "Invalid age"}
+	}
+
 	if err := c.repository.UpdatePerson(personID, &data); err != nil {
 		return nil, &common.Error{Code: "400", Message: err.Error()}
 	}
